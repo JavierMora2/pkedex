@@ -2,12 +2,14 @@ from app import mongo
 from app.models.super_clase import SuperClass
 
 class User(SuperClass):
-    def _init_(self):
-        super()._init_("pokemons_users")
+    def __init__(self):  # <-- Corregido __init__
+        super().__init__("pokemons_users")  # <-- Corregido super().__init__()
 
     def find_all(self):
-        raise NotImplementedError ("No es necesario obtener todos los usuarios ")
+        raise NotImplementedError("No es necesario obtener todos los usuarios")
     
     def get_by_email_password(self, email, password):
-        user = self.collection.find_one({"email":email, "password": password})
+        user = self.collection.find_one({"email": email, "password": password})
+        if user:
+            user["_id"] = str(user["_id"])
         return user
